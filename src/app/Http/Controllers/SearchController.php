@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class LandingController extends Controller
+class SearchController extends Controller
 {
+
     public function index(): Response
     {
-        return Inertia::render('Landing/landing');
+        return Inertia::render('Search/search');
     }
+
 }
