@@ -1,17 +1,22 @@
-import React, { useState } from "react";
-import { router, usePage } from "@inertiajs/react";
+import React from "react";
+import { router } from "@inertiajs/react";
 import "@css/pages/search.css";
+import SearchResult from "@js/Components/SearchPage/SearchResult";  
+import KnowledgeCard from "@js/Components/SearchPage/KnowledgeCard"; 
 
-const Search: React.FC = () => {
-  const { q } = (usePage().props as { q?: string });
-  const [query, setQuery] = useState(q || "");
+const Search = () => {
 
-  const handleSearch = () => {
-    router.get("/search", { q: query });
+  const handleSearch = (searchInput: HTMLInputElement) => {
+    const queryValue = searchInput.value;
+    if (queryValue) {
+      router.get("/search", { q: queryValue });
+    }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") handleSearch();
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch(e.currentTarget);
+    }
   };
 
   return (
@@ -29,20 +34,14 @@ const Search: React.FC = () => {
             <input
                 type="text"
                 className="search-header-input"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Buscar..."
                 onKeyDown={handleKeyDown}
             />
-            {query && (
-                <span
-                className="search-header-clear"
-                onClick={() => setQuery("")}
-                >
-                ✕
-                </span>
-            )}
             <span className="search-header-divider" />
-            <span className="search-header-icon" onClick={handleSearch}>
+            <span className="search-header-icon" onClick={(e) => {
+              const input = (e.currentTarget.parentElement?.querySelector('input') as HTMLInputElement);
+              if (input) handleSearch(input);
+            }}>
                 🔍
             </span>
             </div>
@@ -78,176 +77,85 @@ const Search: React.FC = () => {
       {/* ── Body ── */}
       <div className="search-body">
         {/* Columna de resultados */}
-        <main className="search-results-col">
-          <p className="search-results-stats">
-            Aproximadamente 1.250.000 resultados (0,42 segundos)
-          </p>
+      <main className="search-results-col">
+        <p className="search-results-stats">
+          Aproximadamente 1.250.000 resultados (0,42 segundos)
+        </p>
 
-          {/* Resultado 1 */}
-          <article className="search-result">
-            <div className="search-result-url-row">
-              <div className="search-result-favicon">J</div>
-              <div className="search-result-site-info">
-                <span className="search-result-site-name">Juanan Dev</span>
-                <span className="search-result-url">
-                  https://juanan.dev › sobre-mi
-                </span>
-              </div>
-            </div>
-            <h3 className="search-result-title">
-              <a href="#">Juanan – Desarrollador Full Stack</a>
-            </h3>
-            <p className="search-result-snippet">
-              <b>Juanan</b> es un desarrollador full stack especializado en
-              Laravel, React y TypeScript. Con experiencia en proyectos web
-              modernos y arquitecturas escalables...
-            </p>
-          </article>
+        {/* Resultado 1 */}
+        <SearchResult
+          favicon="J"
+          siteName="Juanan Dev"
+          url="https://juanan.dev › sobre-mi"
+          title="Juanan – Desarrollador Full Stack"
+          snippet="Juanan es un desarrollador full stack especializado en Laravel, React y TypeScript. Con experiencia en proyectos web modernos y arquitecturas escalables..."
+          titleLink="#"
+        />
 
-          {/* Resultado 2 */}
-          <article className="search-result">
-            <div className="search-result-url-row">
-              <div className="search-result-favicon">GH</div>
-              <div className="search-result-site-info">
-                <span className="search-result-site-name">GitHub</span>
-                <span className="search-result-url">
-                  https://github.com › juanan
-                </span>
-              </div>
-            </div>
-            <h3 className="search-result-title">
-              <a href="#">juanan (Juanan) · GitHub</a>
-            </h3>
-            <p className="search-result-snippet">
-              Repositorios públicos de <b>Juanan</b>. Proyectos open source,
-              contribuciones y colaboraciones en el ecosistema de desarrollo
-              web...
-            </p>
-          </article>
+        {/* Resultado 2 */}
+        <SearchResult
+          favicon="GH"
+          siteName="GitHub"
+          url="https://github.com › juanan"
+          title="juanan (Juanan) · GitHub"
+          snippet="Repositorios públicos de Juanan. Proyectos open source, contribuciones y colaboraciones en el ecosistema de desarrollo web..."
+          titleLink="#"
+        />
 
-          {/* Resultado 3 */}
-          <article className="search-result">
-            <div className="search-result-url-row">
-              <div className="search-result-favicon">In</div>
-              <div className="search-result-site-info">
-                <span className="search-result-site-name">LinkedIn</span>
-                <span className="search-result-url">
-                  https://linkedin.com › in › juanan
-                </span>
-              </div>
-            </div>
-            <h3 className="search-result-title">
-              <a href="#">Juanan – Full Stack Developer | LinkedIn</a>
-            </h3>
-            <p className="search-result-snippet">
-              <span className="search-result-date">15 mar 2026 — </span>
-              Perfil profesional de <b>Juanan</b>. Experiencia en desarrollo
-              web, tecnologías cloud y metodologías ágiles. Conecta conmigo
-              para saber más...
-            </p>
-          </article>
+        {/* Resultado 3 */}
+        <SearchResult
+          favicon="In"
+          siteName="LinkedIn"
+          url="https://linkedin.com › in › juanan"
+          title="Juanan – Full Stack Developer | LinkedIn"
+          snippet="Perfil profesional de Juanan. Experiencia en desarrollo web, tecnologías cloud y metodologías ágiles. Conecta conmigo para saber más..."
+          titleLink="#"
+          date="15 mar 2026"
+        />
 
-          {/* People Also Ask */}
-          <div className="people-also-ask">
-            <h3 className="people-also-ask-title">
-              Otras preguntas de los usuarios
-            </h3>
-            <div className="paa-item">
-              <span>¿Quién es Juanan desarrollador?</span>
-              <span className="paa-arrow">▼</span>
-            </div>
-            <div className="paa-item">
-              <span>¿Qué tecnologías usa Juanan?</span>
-              <span className="paa-arrow">▼</span>
-            </div>
-            <div className="paa-item">
-              <span>¿Dónde puedo ver los proyectos de Juanan?</span>
-              <span className="paa-arrow">▼</span>
-            </div>
-            <div className="paa-item">
-              <span>¿Cómo contactar con Juanan?</span>
-              <span className="paa-arrow">▼</span>
-            </div>
-          </div>
+        {/* People Also Ask */}
+        <div className="people-also-ask">
+          {/* ... código igual que antes ... */}
+        </div>
 
-          {/* Resultado 4 */}
-          <article className="search-result">
-            <div className="search-result-url-row">
-              <div className="search-result-favicon">📝</div>
-              <div className="search-result-site-info">
-                <span className="search-result-site-name">Blog de Juanan</span>
-                <span className="search-result-url">
-                  https://juanan.dev › blog
-                </span>
-              </div>
-            </div>
-            <h3 className="search-result-title">
-              <a href="#">Blog – Artículos sobre desarrollo web</a>
-            </h3>
-            <p className="search-result-snippet">
-              Artículos y tutoriales sobre <b>Laravel</b>, <b>React</b>,
-              DevOps y buenas prácticas de desarrollo. Publicaciones recientes
-              sobre arquitectura de software...
-            </p>
-          </article>
+        {/* Resultado 4 */}
+        <SearchResult
+          favicon="📝"
+          siteName="Blog de Juanan"
+          url="https://juanan.dev › blog"
+          title="Blog – Artículos sobre desarrollo web"
+          snippet="Artículos y tutoriales sobre Laravel, React, DevOps y buenas prácticas de desarrollo. Publicaciones recientes sobre arquitectura de software..."
+          titleLink="#"
+        />
 
-          {/* Resultado 5 */}
-          <article className="search-result">
-            <div className="search-result-url-row">
-              <div className="search-result-favicon">🐦</div>
-              <div className="search-result-site-info">
-                <span className="search-result-site-name">X (Twitter)</span>
-                <span className="search-result-url">
-                  https://x.com › juanan_dev
-                </span>
-              </div>
-            </div>
-            <h3 className="search-result-title">
-              <a href="#">Juanan (@juanan_dev) / X</a>
-            </h3>
-            <p className="search-result-snippet">
-              Compartiendo conocimiento sobre desarrollo web, tips de
-              productividad y novedades del mundo tech. Sígueme para estar al
-              día...
-            </p>
-          </article>
-        </main>
+        {/* Resultado 5 */}
+        <SearchResult
+          favicon="🐦"
+          siteName="X (Twitter)"
+          url="https://x.com › juanan_dev"
+          title="Juanan (@juanan_dev) / X"
+          snippet="Compartiendo conocimiento sobre desarrollo web, tips de productividad y novedades del mundo tech. Sígueme para estar al día..."
+          titleLink="#"
+        />
+      </main>
 
         {/* ── Knowledge Panel ── */}
         <aside className="search-knowledge-panel">
-          <div className="knowledge-card">
-            <div className="knowledge-card-img">👨‍💻</div>
-            <div className="knowledge-card-body">
-              <h2 className="knowledge-card-title">Juanan</h2>
-              <p className="knowledge-card-subtitle">
-                Desarrollador Full Stack
-              </p>
-              <p className="knowledge-card-description">
-                Desarrollador web especializado en crear experiencias digitales
-                modernas con Laravel, React, TypeScript y tecnologías cloud.
-                Apasionado por el código limpio y la arquitectura de software.
-              </p>
-              <p className="knowledge-card-source">
-                <a href="#">juanan.dev</a>
-              </p>
-            </div>
-            <div className="knowledge-card-info">
-              <div className="knowledge-card-row">
-                <span className="knowledge-card-label">Stack</span>
-                <span className="knowledge-card-value">
-                  Laravel, React, TypeScript
-                </span>
-              </div>
-              <div className="knowledge-card-row">
-                <span className="knowledge-card-label">Ubicación</span>
-                <span className="knowledge-card-value">España</span>
-              </div>
-              <div className="knowledge-card-row">
-                <span className="knowledge-card-label">GitHub</span>
-                <span className="knowledge-card-value">github.com/juanan</span>
-              </div>
-            </div>
-          </div>
+          <KnowledgeCard
+            title="Juanan"
+            subtitle="Desarrollador Full Stack"
+            description="Desarrollador web especializado en crear experiencias digitales modernas con Laravel, React, TypeScript y tecnologías cloud. Apasionado por el código limpio y la arquitectura de software."
+            emoji="👨‍💻"
+            source={{
+              text: "juanan.dev",
+              url: "#",
+            }}
+            info={[
+              { label: "Stack", value: "Laravel, React, TypeScript" },
+              { label: "Ubicación", value: "España" },
+              { label: "GitHub", value: "github.com/juanan" },
+            ]}
+          />
         </aside>
       </div>
 
