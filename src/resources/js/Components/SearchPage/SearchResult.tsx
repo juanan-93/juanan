@@ -1,4 +1,5 @@
 import React from "react";
+import { router } from "@inertiajs/react";
 import "@css/components/SearchPage/SearchResult.css";
 
 interface SearchResultProps {
@@ -20,6 +21,12 @@ const SearchResult: React.FC<SearchResultProps> = ({
   titleLink,
   date,
 }) => {
+  // Maneja el clic en el título para navegar sin recargar la página
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    router.get(titleLink);
+  };
+
   return (
     <article className="search-result">
       {/* URL Row - Favicon, site name, URL */}
@@ -33,7 +40,9 @@ const SearchResult: React.FC<SearchResultProps> = ({
 
       {/* Title */}
       <h3 className="search-result-title">
-        <a href={titleLink}>{title}</a>
+        <a href={titleLink} onClick={handleClick}>
+          {title}
+        </a>
       </h3>
 
       {/* Snippet/Description */}

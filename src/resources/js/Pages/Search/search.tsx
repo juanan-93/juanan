@@ -82,14 +82,14 @@ const Search = () => {
           Aproximadamente 1.250.000 resultados (0,42 segundos)
         </p>
 
-        {/* Resultado 1 */}
+        {/* About Me */}
         <SearchResult
           favicon="J"
           siteName="Juanan Dev"
           url="https://juanan.dev › sobre-mi"
           title="Juanan – Desarrollador Full Stack"
           snippet="Juanan es un desarrollador full stack especializado en Laravel, React y TypeScript. Con experiencia en proyectos web modernos y arquitecturas escalables..."
-          titleLink="#"
+          titleLink="/about-me"
         />
 
         {/* Resultado 2 */}
