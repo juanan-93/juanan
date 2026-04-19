@@ -92,12 +92,22 @@ const Search = () => {
           titleLink="/about-me"
         />
 
-        {/* Resultado 2 */}
+        {/* My Projects */}
         <SearchResult
-          favicon="GH"
-          siteName="GitHub"
-          url="https://github.com › juanan"
-          title="juanan (Juanan) · GitHub"
+          favicon="MP"
+          siteName="My Projects"
+          url="https://juanan.dev › my-projects"
+          title="Mis Proyectos – Juanan Dev"
+          snippet="Explora los proyectos desarrollados por Juanan, incluyendo aplicaciones web, herramientas open source y contribuciones a la comunidad de desarrollo."
+          titleLink="/my-projects"
+        />
+
+        {/* Resultado 3 */}
+        <SearchResult
+          favicon="In"
+          siteName="LinkedIn"
+          url="https://linkedin.com › in › juanan"
+          title="Juanan – Full Stack Developer | LinkedIn"
           snippet="Repositorios públicos de Juanan. Proyectos open source, contribuciones y colaboraciones en el ecosistema de desarrollo web..."
           titleLink="#"
         />
