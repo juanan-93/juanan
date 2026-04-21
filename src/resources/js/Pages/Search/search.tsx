@@ -102,7 +102,7 @@ const Search = () => {
           titleLink="/my-projects"
         />
 
-        {/* Resultado 3 */}
+        {/* GitHub */}
         <SearchResult
           favicon="In"
           siteName="LinkedIn"
@@ -112,7 +112,7 @@ const Search = () => {
           titleLink="#"
         />
 
-        {/* Resultado 3 */}
+        {/* LinkedIn */}
         <SearchResult
           favicon="In"
           siteName="LinkedIn"
@@ -123,30 +123,17 @@ const Search = () => {
           date="15 mar 2026"
         />
 
-        {/* People Also Ask */}
-        <div className="people-also-ask">
-          {/* ... código igual que antes ... */}
-        </div>
-
-        {/* Resultado 4 */}
+        {/* GAME */}
         <SearchResult
-          favicon="📝"
-          siteName="Blog de Juanan"
+          favicon="G"
+          siteName="GAME"
           url="https://juanan.dev › blog"
-          title="Blog – Artículos sobre desarrollo web"
-          snippet="Artículos y tutoriales sobre Laravel, React, DevOps y buenas prácticas de desarrollo. Publicaciones recientes sobre arquitectura de software..."
+          title="¿Te aburre mi perfil? – Si te aburre mi perfil puedes echar una partida"
+          snippet="Entra y entretente echando unas parttas a este juego, el juego te sonara de algo solo tienes que hacer click en el enlace y disfrutar de la experiencia."
           titleLink="#"
         />
 
-        {/* Resultado 5 */}
-        <SearchResult
-          favicon="🐦"
-          siteName="X (Twitter)"
-          url="https://x.com › juanan_dev"
-          title="Juanan (@juanan_dev) / X"
-          snippet="Compartiendo conocimiento sobre desarrollo web, tips de productividad y novedades del mundo tech. Sígueme para estar al día..."
-          titleLink="#"
-        />
+    
       </main>
 
         {/* ── Knowledge Panel ── */}
