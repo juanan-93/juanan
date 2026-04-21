@@ -17,3 +17,6 @@ Route::get('/about-me', [AboutmeController::class, 'index'])->name('about-me');
 
 //My projects
 Route::get('/my-projects', [MyProjectsController::class, 'index'])->name('my-projects');
+
+//Game
+Route::get('/game', [GameController::class, 'index'])->name('game');

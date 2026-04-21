@@ -127,10 +127,10 @@ const Search = () => {
         <SearchResult
           favicon="G"
           siteName="GAME"
-          url="https://juanan.dev › blog"
+          url="https://juanan.dev › Game"
           title="¿Te aburre mi perfil? – Si te aburre mi perfil puedes echar una partida"
           snippet="Entra y entretente echando unas parttas a este juego, el juego te sonara de algo solo tienes que hacer click en el enlace y disfrutar de la experiencia."
-          titleLink="#"
+          titleLink="/game"
         />
 
     
