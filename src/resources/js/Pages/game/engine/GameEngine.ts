@@ -1,6 +1,7 @@
 import Player from "./Player";
 import Ground from "./Ground";
 import CactiController from "./CactiController";
+import BirdController from "./BirdController";
 import Score from "./Score";
 
 type CactusConfig = {
@@ -33,6 +34,18 @@ const CACTI_CONFIG: CactusConfig[] = [
   { width: 68 / 1.5, height: 70 / 1.5, image: "/img/game/cactus_3.png" },
 ];
 
+// Dimensiones del dino agachado
+const PLAYER_DUCK_WIDTH = 118 / 1.5;
+const PLAYER_DUCK_HEIGHT = 58 / 1.5;
+
+// Dimensiones del pájaro
+const BIRD_WIDTH = 92 / 1.5;
+const BIRD_HEIGHT = 70 / 1.5;
+const BIRD_IMAGES = ["/img/game/1.png", "/img/game/2.png"];
+
+// Velocidad mínima a la que empiezan a aparecer pájaros (~25 s de juego)
+const BIRDS_MIN_SPEED = 1.25;
+
 export default class GameEngine {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
@@ -41,6 +54,7 @@ export default class GameEngine {
   private player: Player | null = null;
   private ground: Ground | null = null;
   private cactiController: CactiController | null = null;
+  private birdsController: BirdController | null = null;
   private score: Score | null = null;
 
   private scaleRatio = 1;
@@ -78,6 +92,7 @@ export default class GameEngine {
 
     this.ground?.reset();
     this.cactiController?.reset();
+    this.birdsController?.reset();
     this.score?.reset();
     this.player?.reset();
   }
@@ -88,6 +103,10 @@ export default class GameEngine {
 
   setJumpPressed(value: boolean) {
     this.player?.setJumpPressed(value);
+  }
+
+  setDuckPressed(value: boolean) {
+    this.player?.setDuckPressed(value);
   }
 
   update(currentTime: number) {
@@ -105,12 +124,18 @@ export default class GameEngine {
     if (!this.gameOver && !this.waitingToStart) {
       this.ground?.update(this.gameSpeed, frameTimeDelta);
       this.cactiController?.update(this.gameSpeed, frameTimeDelta);
+      const birdsEnabled = this.gameSpeed >= BIRDS_MIN_SPEED;
+      const spawnBlocked = !!(this.cactiController?.hasObstacleInZone(this.canvas.width * 0.5));
+      this.birdsController?.update(this.gameSpeed, frameTimeDelta, birdsEnabled, spawnBlocked);
       this.player?.update(this.gameSpeed, frameTimeDelta);
       this.score?.update(frameTimeDelta);
       this.updateGameSpeed(frameTimeDelta);
     }
 
-    if (!this.gameOver && this.player && this.cactiController?.collideWith(this.player)) {
+    const cactusHit = !!(this.player && this.cactiController?.collideWith(this.player));
+    const birdHit = !!(this.player && !this.player.isDucking() && this.birdsController?.collideWith(this.player));
+
+    if (!this.gameOver && (cactusHit || birdHit)) {
       this.gameOver = true;
       this.gameOverTime = currentTime;
       this.score?.setHighScore();
@@ -144,6 +169,8 @@ export default class GameEngine {
       this.ctx,
       playerWidthInGame,
       playerHeightInGame,
+      PLAYER_DUCK_WIDTH * this.scaleRatio,
+      PLAYER_DUCK_HEIGHT * this.scaleRatio,
       minJumpHeightInGame,
       maxJumpHeightInGame,
       this.scaleRatio
@@ -171,6 +198,21 @@ export default class GameEngine {
     this.cactiController = new CactiController(
       this.ctx,
       cactiImages,
+      this.scaleRatio,
+      GROUND_AND_CACTUS_SPEED
+    );
+
+    const birdImages = BIRD_IMAGES.map((src) => {
+      const img = new Image();
+      img.src = src;
+      return img;
+    });
+
+    this.birdsController = new BirdController(
+      this.ctx,
+      birdImages,
+      BIRD_WIDTH * this.scaleRatio,
+      BIRD_HEIGHT * this.scaleRatio,
       this.scaleRatio,
       GROUND_AND_CACTUS_SPEED
     );
@@ -230,6 +272,7 @@ export default class GameEngine {
   private drawFrame() {
     this.ground?.draw();
     this.cactiController?.draw();
+    this.birdsController?.draw();
     this.player?.draw();
     this.score?.draw();
 

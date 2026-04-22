@@ -54,6 +54,9 @@ export default class CactiController {
     collideWith(sprite) {
         return this.cacti.some((cactus) => cactus.collideWith(sprite));
     }
+    hasObstacleInZone(minX) {
+        return this.cacti.some((c) => c.x > minX);
+    }
     reset() {
         this.cacti = [];
         this.setNextCactusTime();

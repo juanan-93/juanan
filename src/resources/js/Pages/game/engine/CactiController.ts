@@ -90,6 +90,11 @@ export default class CactiController {
     return this.cacti.some((cactus) => cactus.collideWith(sprite));
   }
 
+  /** Devuelve true si hay algún cactus con x > minX (zona derecha o fuera de pantalla). */
+  hasObstacleInZone(minX: number): boolean {
+    return this.cacti.some((c) => c.x > minX);
+  }
+
   reset() {
     this.cacti = [];
     this.setNextCactusTime();

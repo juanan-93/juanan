@@ -125,24 +125,36 @@ export default function Game({ topScores }: Props) {
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.code !== "Space") return;
+      if (event.code === "Space") {
+        event.preventDefault();
+        const engine = engineRef.current;
+        if (!engine) return;
+        engine.setJumpPressed(true);
+        return;
+      }
 
-      event.preventDefault();
-      const engine = engineRef.current;
-      if (!engine) return;
-
-      engine.setJumpPressed(true);
+      if (event.code === "ArrowDown") {
+        event.preventDefault();
+        engineRef.current?.setDuckPressed(true);
+        return;
+      }
     };
 
     const onKeyUp = (event: KeyboardEvent) => {
-      if (event.code !== "Space") return;
+      if (event.code === "Space") {
+        event.preventDefault();
+        const engine = engineRef.current;
+        if (!engine) return;
+        engine.setJumpPressed(false);
+        handleStartOrRestartFromInput();
+        return;
+      }
 
-      event.preventDefault();
-      const engine = engineRef.current;
-      if (!engine) return;
-
-      engine.setJumpPressed(false);
-      handleStartOrRestartFromInput();
+      if (event.code === "ArrowDown") {
+        event.preventDefault();
+        engineRef.current?.setDuckPressed(false);
+        return;
+      }
     };
 
     const onTouchStart = (event: TouchEvent) => {
@@ -258,7 +270,7 @@ export default function Game({ topScores }: Props) {
           )}
           
           {hasStarted && !isGameOver && (
-            <p className="controls-hint">[ Espacio ] o toque en pantalla para saltar</p>
+            <p className="controls-hint">[ Espacio ] saltar &nbsp;·&nbsp; [ ↓ ] agacharse &nbsp;·&nbsp; toque en pantalla para saltar</p>
           )}
         </div>
       </div>
