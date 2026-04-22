@@ -1,15 +1,16 @@
 export default class Score {
   private score = 0;
-  private readonly HIGH_SCORE_KEY = "highScore";
+  private globalHighScore: number;
 
   private ctx: CanvasRenderingContext2D;
   private canvas: HTMLCanvasElement;
   private scaleRatio: number;
 
-  constructor(ctx: CanvasRenderingContext2D, scaleRatio: number) {
+  constructor(ctx: CanvasRenderingContext2D, scaleRatio: number, globalHighScore: number) {
     this.ctx = ctx;
     this.canvas = ctx.canvas;
     this.scaleRatio = scaleRatio;
+    this.globalHighScore = globalHighScore;
   }
 
   update(frameTimeDelta: number) {
@@ -25,14 +26,11 @@ export default class Score {
   }
 
   setHighScore() {
-    const highScore = Number(localStorage.getItem(this.HIGH_SCORE_KEY));
-    if (this.score > highScore) {
-      localStorage.setItem(this.HIGH_SCORE_KEY, Math.floor(this.score).toString());
-    }
+    // No hace nada; el récord global lo gestiona el backend.
   }
 
   draw() {
-    const highScore = Number(localStorage.getItem(this.HIGH_SCORE_KEY));
+    const highScore = Math.max(this.globalHighScore, Math.floor(this.score));
     const y = 20 * this.scaleRatio;
 
     const fontSize = 20 * this.scaleRatio;

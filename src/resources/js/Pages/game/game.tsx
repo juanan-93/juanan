@@ -86,6 +86,7 @@ export default function Game({ topScores }: Props) {
         setFinalScore(score);
         setIsGameOver(true);
       },
+      globalHighScore: topScores[0]?.best_score ?? 0,
     });
 
     engineRef.current = engine;

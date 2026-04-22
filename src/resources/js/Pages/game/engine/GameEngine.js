@@ -40,7 +40,8 @@ export default class GameEngine {
     gameOver = false;
     waitingToStart = true;
     gameOverTime = null;
-    constructor({ canvas, onGameOver }) {
+    globalHighScore = 0;
+    constructor({ canvas, onGameOver, globalHighScore = 0 }) {
         this.canvas = canvas;
         const context = this.canvas.getContext("2d");
         if (!context) {
@@ -48,6 +49,7 @@ export default class GameEngine {
         }
         this.ctx = context;
         this.onGameOver = onGameOver;
+        this.globalHighScore = globalHighScore;
         this.setScreen();
     }
     isWaitingToStart() {
@@ -138,7 +140,7 @@ export default class GameEngine {
             return img;
         });
         this.birdsController = new BirdController(this.ctx, birdImages, BIRD_WIDTH * this.scaleRatio, BIRD_HEIGHT * this.scaleRatio, this.scaleRatio, GROUND_AND_CACTUS_SPEED);
-        this.score = new Score(this.ctx, this.scaleRatio);
+        this.score = new Score(this.ctx, this.scaleRatio, this.globalHighScore);
     }
     setScreen() {
         const containerWidth =

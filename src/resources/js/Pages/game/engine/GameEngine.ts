@@ -13,6 +13,7 @@ type CactusConfig = {
 type GameEngineOptions = {
   canvas: HTMLCanvasElement;
   onGameOver?: (finalScore: number) => void;
+  globalHighScore?: number;
 };
 
 const GAME_SPEED_START = 1;
@@ -63,8 +64,9 @@ export default class GameEngine {
   private gameOver = false;
   private waitingToStart = true;
   private gameOverTime: number | null = null;
+  private globalHighScore = 0;
 
-  constructor({ canvas, onGameOver }: GameEngineOptions) {
+  constructor({ canvas, onGameOver, globalHighScore = 0 }: GameEngineOptions) {
     this.canvas = canvas;
     const context = this.canvas.getContext("2d");
     if (!context) {
@@ -73,6 +75,7 @@ export default class GameEngine {
 
     this.ctx = context;
     this.onGameOver = onGameOver;
+    this.globalHighScore = globalHighScore;
     this.setScreen();
   }
 
@@ -217,7 +220,7 @@ export default class GameEngine {
       GROUND_AND_CACTUS_SPEED
     );
 
-    this.score = new Score(this.ctx, this.scaleRatio);
+    this.score = new Score(this.ctx, this.scaleRatio, this.globalHighScore);
   }
 
   private setScreen() {
